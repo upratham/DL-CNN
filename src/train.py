@@ -4,6 +4,8 @@ import numpy as np
 from sklearn.model_selection import train_test_split
 from keras.callbacks import EarlyStopping,ReduceLROnPlateau
 
+reduce_lr = ReduceLROnPlateau(monitor="val_accuracy",factor=0.5,patience=10,min_lr=1e-7,verbose=1)
+early_stop = EarlyStopping(monitor="val_accuracy",patience=25,restore_best_weights=True)
 
 def train(Images,label_idx,model,epochs,batch_size):
     X_train, X_test, y_train, y_test = train_test_split(Images, label_idx,test_size=0.2,
@@ -11,13 +13,11 @@ def train(Images,label_idx,model,epochs,batch_size):
     
 
     
-    # X_train = (X_train.astype(np.float32) / 255.0)
-    # X_test  = (X_test.astype(np.float32)  / 255.0)
+   
      
     model.compile(optimizer="adam", loss="sparse_categorical_crossentropy", metrics=["accuracy"])
-    reduce_lr = ReduceLROnPlateau(monitor="val_loss",factor=0.5,patience=10,min_lr=1e-7,verbose=1)
-    early_stop = EarlyStopping(monitor="val_loss",patience=15,restore_best_weights=True)
-    history = model.fit(X_train, y_train,epochs=epochs,batch_size=batch_size,validation_split=0.1,callbacks=[reduce_lr,early_stop])
+    
+    history = model.fit(X_train, y_train,epochs=epochs,batch_size=batch_size)#,validation_split=0.15,callbacks=[reduce_lr,early_stop]
 
     return X_test,y_test,model,history
 
