@@ -21,6 +21,7 @@ def data_preprocess(img_size,data_dir):
         labels.append(name)
         Images.append(image)
         label_idx.append(idx)
+        
         # print("\nExtracting")
         # print(name)
         # print(idx)
