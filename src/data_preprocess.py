@@ -5,8 +5,7 @@ import tensorflow as tf
 from tqdm import tqdm 
 import cv2
 
-def data_preprocess(img_size,data_dir):
-    label_names = ["bougainvillea","daisies","garden_roses","gardenias","hibiscus","hydrangeas","lilies","orchids","peonies","tulip"]
+def preprocess(img_size,data_dir,label_names):
     Images= []
     labels= []
     label_idx=[]
@@ -28,24 +27,11 @@ def data_preprocess(img_size,data_dir):
         # #print(image)
     return Images, labels, label_idx
 
-
-
-
-
-
-
-
-    
-
-
-
-
-
-
 def main():
     img_size=(200,200)
     path=r'data/flowers'
-    Images,labels,label_idx=data_preprocess(img_size=img_size,data_dir=path)
+    label_names = ["bougainvillea","daisies","garden_roses","gardenias","hibiscus","hydrangeas","lilies","orchids","peonies","tulip"]
+    Images,labels,label_idx=preprocess(img_size=img_size,data_dir=path,label_names=label_names)
     Images=np.array(Images)
     label_idx=np.array(label_idx)
     print('img shape:',Images.shape)
