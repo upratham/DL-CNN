@@ -26,10 +26,10 @@ def build_cnn(droup_outsize,n_classes):
 
         layers.Conv2D(512, (3, 3), strides=1, padding="same", activation="relu"),  
         #last layer no max pooling
-        layers.Flatten(),
+        layers.GlobalAveragePooling2D(), # instead off flatten to handle GPU memory allocation 
         layers.Dense(512, activation="relu"), 
         layers.Dropout(0.25),
-        layers.Dense(n_classes, activation="softmax")
+        layers.Dense(n_classes, activation="softmax",dtype="float32")
 
     ])
     print(cnn.summary())
@@ -50,10 +50,10 @@ def build_VGG16(droup_outsize,n_classes):
 
     model = models.Sequential([
         conv_base,
-        layers.Flatten(),
+        layers.GlobalAveragePooling2D(),
         layers.Dense(512, activation="relu"),
         layers.Dropout(droup_outsize),
-        layers.Dense(n_classes, activation="softmax")
+        layers.Dense(n_classes, activation="softmax",dtype="float32")
     ])
     print(model.summary())
 
