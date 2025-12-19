@@ -39,18 +39,18 @@ def build_cnn(droup_outsize,n_classes):
 
 
 
-def build_VGG16(droup_outsize,n_classes):
+def build_VGG16(droup_outsize,n_classes,trasnfer_flag=False,input_shape=(200, 200, 3)):
  
     conv_base = VGG16(
         weights="imagenet",
-        include_top=False,              # remove VGG16 classifier
-        input_shape=(200, 200, 3)
+        include_top=trasnfer_flag,              # remove VGG16 classifier
+        input_shape=input_shape
     )
-    conv_base.trainable = False        # freeze feature extractor
+    conv_base.trainable = trasnfer_flag        # freeze feature extractor
 
     model = models.Sequential([
         conv_base,
-        layers.GlobalAveragePooling2D(),
+        layers.GlobalAveragePooling2D(),# instead off flatten,GlobalAveragePooling2D is used  to handle GPU memory allocation 
         layers.Dense(512, activation="relu"),
         layers.Dropout(droup_outsize),
         layers.Dense(n_classes, activation="softmax",dtype="float32")
